@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load comments %}
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>{{ protocol.title }}</title>
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<!--[if lt IE 9]>
+			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<style>
+			html { color: black; background-color: white; text-align: center; font-family: sans-serif; }
+			body { width: 1250px; margin: 0 auto 0 auto; text-align: left; padding: 5px; }
+			
+			header, footer { width: 1250px; display: table; }
+			/* To add style to the footer I simply changed "header" to "header, footer". In other words both header and footer have the same style except for text alignment and background color which is set below. */
+			nav { width: 300px; float: left; display: table; }
+			article { width: 950px; display: table; } 
+			footer { text-align: center; }
+
+			/* Below I have added background colors so you can see where each element is. You can delete them if you want. */
+			body { background-color: lightseagreen; }
+			header { background-color: orange; }
+			nav { background-color: orange; }
+			article { background-color: skyblue; }
+			footer { background-color: lightseagreen; }
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>Open Protocols</h1>
+		</header>
+		<nav>
+			<ul>
+				<li><a href="index.html">home</a></li>
+				<li><a href="tags.html">tags</a></li>
+			</ul>
+		</nav>
+ 		<article>
+ 			<h1>Welcome to Open Protocols</h1>
+			
+			<p>a place to share protocols and methods so you can stop reinventing the wheel and start reinventing the universe</p>
+
+			{% if tag_list %}
+                <ul>
+                {% for tag in tag_list %}
+                    <li><a href="/protocols/tags/{{ tag.id }}/">{{ tag.name }}</a></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No tags are available.</p>
+            {% endif %}
+
+		</article>
+		<footer>
+			<h1>Open Protocols</h1>
+			<p>
+			</p>
+		</footer>
+	</body> 
+</html>
