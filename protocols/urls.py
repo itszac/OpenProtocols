@@ -10,6 +10,7 @@ urlpatterns = patterns('protocols.views',
     url(r'^tags/(?P<tag_id>\d+)/$', 'tags'),
     url(r'^post/', 'add_protocol'),
     url(r'(?P<tag_name>\d+)/','tags'),
+    url(r'(?P<user_id>\d+)/$', 'user')
 )
 
 urlpatterns += patterns('',

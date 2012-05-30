@@ -28,3 +28,8 @@ def add_protocol(request):
     return render_to_response('protocols/add_protocol.html', {
         'form':form,
     },context_instance=RequestContext(request),)
+
+def view_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    protocol_list = Protocol.objects.all().filter(author=user)
+    return render_to_response('protocols/user.html', {'user': p},context_instance=RequestContext(request),)
