@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block page_title %}mat&met-{{protocol.name}}{% endblock %}
+
+{% block body_page_title %}{% endblock %}
+
+
+
+{% block main_pane %}
+<h2>{{protocol.name}}</h2>
+<p>{{protocol.description}}</p>
+<h4>Comments</h4>
+
+        {% for comment in protocol_comments %}
+
+            <li>{{ comment.content }}</li>
+
+        {% endfor %}
+<h4>Tags</h4>
+
+        {% for tag in protocol_tags %}
+
+            <li>{{ tag.name }}</li>
+
+        {% endfor %}
+
+    <div class = 'materials list'>
+
+        <h3>Materials</h3>
+
+        {% for material in materials %}
+
+            <li>{{ material.name }}</li>
+
+        {% endfor %}
+
+    </div>
+
+    <h3>Methods</h3>
+
+
+{% for step in steps %}
+    <div class = 'row'>
+
+        <div class = 'span1'>
+
+            <p>{{ step.order }}</p>
+
+        </div>
+
+        <div class = 'span5'>
+
+            <div class = 'step_content'>
+    
+                <p>{{ step.content }}</p>
+ 
+            </div> 
+ 
+        </div> 
+ 
+    </div> 
+
+<div class = 'well well-color3'>
+
+                <a href='/'>Comment</a>
+
+            </div>
+
+{% endfor %}
+
+{% endblock main_pane %}

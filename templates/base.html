@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+{% load i18n %}
+<!--Thanks to https://github.com/mike360/django-html5-boilerplate for a sample template>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <title>{% block page_title %}{% endblock %}</title>
+        
+        <meta name="description" content="{% block meta_description %}{% endblock %}" />
+        <meta name="author" content="{% block meta_author %}{% endblock %}" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}methods.css" />
+        {% block css %}{% endblock %}
+        
+        <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.1.min.js"></script>
+    </head>
+
+    <body class="{% block body_class %}{% endblock %}">
+    {% block body %}
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
+
+        {% block content %}
+
+            <div class = 'row'>
+
+                <div class='span12'>
+
+            {% block top_pane %}
+
+                    <div class = 'well well-color1'>
+
+
+                <div class='row'>
+
+                    <div class ='span5'>
+
+                    {% block site_title %}
+
+                        <a href="{{ STATIC_URL }}.."><h1>Materials&Methods</h1></a>
+
+                    {% endblock site_title %}
+
+                    </div>
+
+
+                <div class = 'span3 offset3'>
+
+                {% if user.is_authenticated %}
+
+                    {% block quick_user_info %}
+
+                    <div id = quick_user_info>
+                        
+                        <a href="{{ STATIC_URL }}/users/{{user.id}}">{{user.username}}</a>
+
+                        <p>{{user.total_votes}}</p>
+
+
+                    </div>
+
+                    {% endblock quick_user_info %}
+
+                {% else %}
+
+                    {% block quick_user_login %}
+
+                    <div id = quick_user_login>
+
+                        <h4>Login</h4>
+
+                        <form action="/login/" method="post">{% csrf_token %}
+
+                            username: <input type="text" name="username"><br>
+
+                            password: <input type="password" name="password">
+
+                            <input type="submit" value="Submit" />
+
+                        </form>
+
+                        <a href="/new_user">join</a>
+
+                    </div>
+
+                    {% endblock quick_user_login %}
+
+                {% endif %}
+
+                </div>
+
+            </div>
+
+            </div>
+
+
+
+            </div>
+
+        </div>
+        
+            {% endblock top_pane %}
+
+            <div class = 'row'>
+
+                <div class = 'span8'>
+
+                    <div class = 'well well-color2'>
+
+                    {% block main_pane %}
+        
+                    {% endblock main_pane %}
+
+                    </div>
+
+                </div>
+
+                {% block side_pane %}
+
+                <div class = 'span4'>
+
+                    <div class = 'well well-color3'>
+
+                    {% block recent_protocols %}
+
+                        <div class = "sidebar_five_protocols">
+
+                            <h2>Recent</h2>
+
+                            {% for protocol in recent_protocols %}
+
+                                <li><a href="/{{ protocol.id }}">{{ protocol.name }}</a></li>
+ 
+                            {% endfor %}
+
+                        </div>
+
+                    {% endblock recent_protocols %}
+
+                    {% block popular_protocols %}
+
+                        <div class = "sidebar_five_protocols">
+
+                            <h2>Popular</h2>
+
+                            {% for protocol in popular_protocols %}
+
+                                <li><a href="/{{ protocol.id }}">{{ protocol.name }}</a></li>
+ 
+                            {% endfor %}
+
+                        </div>
+
+                    {% endblock popular_protocols %}
+
+                    {% block tags %}
+
+                        <div class = "sidebar_tags">
+
+                            <h2>Tags</h2>
+
+                            {% for tag in tags %}
+
+                                <li><a href="/tags/{{ tag.name }}">{{ tag.name }}</a>  {{ tag.number_protocols }}</li>
+ 
+                            {% endfor %}
+
+                        </div>
+
+                    {% endblock tags %}
+
+                </div>
+
+            </div>
+
+            </div>
+
+        </div>
+        
+            {% endblock side_pane %}
+
+            {% block bottom_pane %}
+
+            <div id = 'footer'>
+
+                <a href="/about">about</a>
+
+                <p> thanks for visiting, hope its been helpful </p>
+
+                {% block other_resources %}
+
+                {% endblock other_resources %}
+
+            </div>
+        
+            {% endblock bottom_pane %}
+
+        {% endblock content %}
+
+        {% block javascript_library %}
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
+        <script src="{{ STATIC_URL }}js/plugins.js"></script>
+        <script src="{{ STATIC_URL }}js/main.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+        {% endblock javascript_library %}
+        {% block javascript %}
+        {% endblock javascript %}
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    {% endblock body %}
+    </body>
+</html>

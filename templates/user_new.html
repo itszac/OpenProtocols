@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block page_title %}mat&met-join{% endblock %}
+
+{% block body_page_title %}{% endblock %}
+
+
+
+{% block main_pane %}
+<form action="/user_new/" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+
+    
+{% endblock main_pane %}
