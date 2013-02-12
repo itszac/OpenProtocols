@@ -2567,6 +2567,7 @@ table th[class*="span"],
 }
 .well-color1 {
   background-color: #221E1D;
+  margin-bottom: 0px;
 }
 .well-color2 {
   background-color: #b2cecf;
@@ -2576,6 +2577,9 @@ table th[class*="span"],
 }
 .well-color4 {
   background-color: 8C8984;
+}
+.step_comments {
+  display: none;
 }
 .fade {
   opacity: 0;
@@ -5640,7 +5644,9 @@ a.thumbnail:hover {
 .affix {
   position: fixed;
 }
-
 .well-color1 h1 {
   color: #74C2E1;
+}
+.comments {
+  display: none;
 }

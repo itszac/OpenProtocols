@@ -10,11 +10,14 @@ class Document(models.Model):
     date_created = models.DateField()
 
     def __unicode__(self):
-
         try:
             return self.name
         except:
             return str(self.author.username) + str(self.date_created)
+
+    def vote_up(self):
+        self.votes = self.votes + 1
+        return self.votes
 
 class Tag(models.Model):
     name = models.CharField(max_length = 100)

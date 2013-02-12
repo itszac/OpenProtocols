@@ -9,13 +9,7 @@
 {% block main_pane %}
 <h2>{{protocol.name}}</h2>
 <p>{{protocol.description}}</p>
-<h4>Comments</h4>
-
-        {% for comment in protocol_comments %}
-
-            <li>{{ comment.content }}</li>
-
-        {% endfor %}
+<a class = 'vote' href ='{{ STATIC_URL }}../vote/{{ protocol.id }}/'><button class = 'btn btn-success'>Like</button></a>  <strong>{{protocol.votes}}</strong> found it helpful
 <h4>Tags</h4>
 
         {% for tag in protocol_tags %}
@@ -23,6 +17,47 @@
             <li>{{ tag.name }}</li>
 
         {% endfor %}
+
+        <form form name="add_tag" action="{{ STATIC_URL }}../add_tag/{{ protocol.id }}" method="POST">
+          <fieldset>
+            <label>Add Tag</label>
+            <input type="text" placeholder="Type something…">
+            <button type="submit" class="btn">Submit</button>
+          </fieldset>
+        </form>
+
+<h4>Comments</h4>
+
+        {% for comment in protocol_comments %}
+
+            <div class = 'media'>
+                <a class = 'pull-left' href='#'>
+                    <p>{{ comment.author }}</p><a class = 'vote' href ='{{ STATIC_URL }}../vote/{{ comment.id }}/'><button class = 'btn btn-success'>Like</button></a>  <strong>{{comment.votes}}</strong> found it helpful
+                </a>
+
+                <h4 class = 'media-heading'></h4>
+
+                <div class = 'media-body'>
+                    <p>{{ comment.content }}</p>
+                </div>
+ 
+            </div> 
+        {% empty %}
+
+                <h4>No comments yet, add one!</h4>
+
+        {% endfor %}
+
+                <div class = 'add_comment_form'
+                    <form name="add_comment" action="{{ STATIC_URL }}../add_comment/{{ step.id }}" method="POST">
+                      <fieldset>
+                        <label>Add comment</label>
+                        <textarea rows="3"></textarea>
+                        <button type="submit" class="btn">Submit</button>
+                      </fieldset>
+                    </form>
+                </div>
+
 
     <div class = 'materials list'>
 
@@ -39,33 +74,111 @@
     <h3>Methods</h3>
 
 
-{% for step in steps %}
-    <div class = 'row'>
-
-        <div class = 'span1'>
-
+{% for step, step_comments in steps %}
+    <div class = 'media'>
+        <a class= 'pull-left' href ='#'>
             <p>{{ step.order }}</p>
+        </a>
 
-        </div>
-
-        <div class = 'span5'>
+        <div class = 'media-body'>
 
             <div class = 'step_content'>
     
                 <p>{{ step.content }}</p>
- 
-            </div> 
- 
-        </div> 
- 
-    </div> 
 
-<div class = 'well well-color3'>
+                <h6><a class = 'show_comments' href='#'>Show Comments</a>    <a class = 'add_comment' href='#'>Add Comment</a></h6>
+ 
+            </div>
 
-                <a href='/'>Comment</a>
+
+            <div class = 'step_comments'> 
+
+                {% for comment in step_comments %}
+
+                <div class = 'media'>
+                    <a class = 'pull-left' href='#'>
+                        <p>{{ comment.author }}</p><a class = 'vote' href ='{{ STATIC_URL }}../vote/{{ comment.id }}/'><button class = 'btn btn-success'>Like</button></a>  <strong>{{comment.votes}}</strong> found it helpful
+                    </a>
+
+                    <h4 class = 'media-heading'></h4>
+
+                    <div class = 'media-body'>
+                        <p>{{ comment.content }}</p>
+                    </div>
+ 
+                </div> 
+                {% empty %}
+
+                <h4>No comments yet, add one!</h4>
+
+
+                {% endfor %}
+
+                <div class = 'add_comment_form'>
+
+                    <form name="add_comment" action="{{ STATIC_URL }}../add_comment/{{ step.id }}" method="POST">
+                      <fieldset>
+                        <label>Add comment</label>
+                        <textarea rows="3"></textarea>
+                        <button type="submit" class="btn">Submit</button>
+                      </fieldset>
+                    </form>
+
+                </div>
 
             </div>
+ 
+        </div> 
+
+    </div>
 
 {% endfor %}
 
 {% endblock main_pane %}
+
+
+{% block javascript %}
+<script>
+$(document).ready(function() {
+    $("a.vote").click(function() {
+        var curr_elem = $(this) ;
+        $.post($(this).attr('href'), function(data){
+            var my_div = $(curr_elem).parent().find("strong");
+            my_div.text(my_div.text()*1+1);     
+        }); 
+        return false; // prevent loading URL from href
+        });
+
+    $("a.show_comments").click(function() {
+        var curr_elem = $(this) ;
+        var my_div = $(curr_elem).parent().parent().parent().find(".step_comments");
+        my_div.toggle(500);     
+        return false;
+        }); 
+
+    $('.comment_form').submit(function() { // catch the form's submit event
+            $.ajax({ // create an AJAX call...
+                data: $(this).serialize(), // get the form data
+                type: $(this).attr('method'), // GET or POST
+                url: $(this).attr('action'), // the file to call
+                success: function(response) { // on success..
+                    $('#DIV_CONTAINING_FORM').html(response); // update the DIV
+                }
+            });
+            return false;
+        });
+
+    $('.tag_form').submit(function() { // catch the form's submit event
+            $.ajax({ // create an AJAX call...
+                data: $(this).serialize(), // get the form data
+                type: $(this).attr('method'), // GET or POST
+                url: $(this).attr('action'), // the file to call
+                success: function(response) { // on success..
+                    $('#DIV_CONTAINING_FORM').html(response); // update the DIV
+                }
+            });
+            return true;
+        });
+    });
+</script>
+{% endblock javascript %}

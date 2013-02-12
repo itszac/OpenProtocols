@@ -8,7 +8,7 @@
 
 {% block main_pane %}
 <form action="/user_new/" method="post">{% csrf_token %}
-{{ form.as_p }}
+{{ form.as_ul }}
 <input type="submit" value="Submit" />
 </form>
 
